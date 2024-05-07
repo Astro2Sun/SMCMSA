@@ -11,4 +11,4 @@
   
 ## Usage
 - `The modality completion module is in folder FindSim_25`
-- `The Multimodal Feature Fusion Module, Pretrained Network, and Sentiment Prediction Module are in network.py`
+- `The Multimodal Feature Fusion Module, Pretrained Network,and Sentiment Prediction Module are in network.py`
