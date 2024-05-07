@@ -20,11 +20,8 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_boolean('train', False, 'set True to train')
 
-# traindata = pickle.load(open('./train.pkl', 'rb'))
-# testdata  = pickle.load(open('./test.pkl', 'rb'))
-
-traindata = pickle.load(open('./m23Vcomplete_train.pkl', 'rb'))
-testdata  = pickle.load(open('./m23Vcomplete_test.pkl', 'rb'))
+traindata = pickle.load(open('./m25Vcomplete_train.pkl', 'rb'))
+testdata  = pickle.load(open('./m25Vcomplete_test.pkl', 'rb'))
 
 
 def evaluation(y_pred, y_true):
@@ -103,12 +100,9 @@ def test(sess, setting):
                 prob = sess.run([mtest.prob], feed_dict)
                 # print(prob[0][0])
 
-                for j in range(len(prob[0])):       # prob[0]才是prob矩阵的实即二维内容
+                for j in range(len(prob[0])):      
                     reallabel = cur_batch['L'][j]
-                    total_pred.append(   np.argmax(prob[0][j], -1)  )        # prob[0][j]是第？个bantch的第j个样本的预测结果，如[8.7254190e-01 1.8419918e-08 1.2745810e-01]
-
-                    # print('预测：',prob[0][j],'***',np.argmax(prob[0][j], -1),reallabel)
-                    # print(np.argmax(prob[0][j], -1))
+                    total_pred.append(   np.argmax(prob[0][j], -1)  )     
 
                 for item in cur_batch['L']:
                     total_y.append(item)
