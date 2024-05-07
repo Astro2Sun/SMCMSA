@@ -8,3 +8,7 @@
 - `numpy==1.15.4`
 - `sklearn`
 - `python 3.6.13`
+  
+## Usage
+- `The modality completion module is in folder FindSim_25`
+- `The Multimodal Feature Fusion Module, Pretrained Network, and Sentiment Prediction Module are in network.py`
