@@ -8,7 +8,7 @@ Building blocks for Transformer
 
 import numpy as np
 import tensorflow as tf
-# import tensorflow._api.v2.compat.v1 as tf
+
 
 
 def kl_div(log_p, log_q):
@@ -19,20 +19,13 @@ def kl_div(log_p, log_q):
     return kl
 
 
-def SigmoidAtt(inputs: object, Wr: object, Wm: object, Wu: object) -> object:     # [num,len, hidden]->[num, hidden]
-    #inputs: [num,len, hidden]
-    H_hot = tf.multiply(tf.matmul( tf.reshape(inputs, [   -1, tf.shape(inputs)[-1]  ]),
-                                    Wu),        # input 变成？*304 -> [?*304]*[304*304]得到[?*304],Wu是[304*304]
-                        tf.nn.sigmoid( tf.matmul( tf.reshape(inputs,[  -1, tf.shape(inputs)[-1]  ]),
-                                                  Wm) )# input 变成？*304 -> [?*304]*[304*304] -> sigmoid([?*304]*[304*304])得到[?*304],Wm是[304*304]
-                        ) #[num*len ,atten]
-
-    # tf.multiply两个矩阵中对应元素各自相乘
-    # tf.matmul（）将矩阵a乘以矩阵b，生成a * b
-    Att_a = tf.nn.softmax(tf.reshape(tf.matmul(H_hot, Wr), [tf.shape(inputs)[0], 1, tf.shape(inputs)[1]])) #[num , 1 len]
-    temp_new = tf.matmul(Att_a, inputs) #[num, 1 ,hidden]
-    temp_new = tf.squeeze(temp_new, 1)     #实质是一个降纬过程
-    return temp_new  #[num, hidden]
+def SigmoidAtt(inputs: object, Wr: object, Wm: object, Wu: object) -> object:   
+    
+    H_hot = tf.multiply(tf.matmul( tf.reshape(inputs, [ -1, tf.shape(inputs)[-1]  ]),Wu), tf.nn.sigmoid( tf.matmul( tf.reshape(inputs,[-1, tf.shape(inputs)[-1]  ]), Wm))) 
+    Att_a = tf.nn.softmax(tf.reshape(tf.matmul(H_hot, Wr), [tf.shape(inputs)[0], 1, tf.shape(inputs)[1]])) 
+    temp_new = tf.matmul(Att_a, inputs)
+    temp_new = tf.squeeze(temp_new, 1)  
+    return temp_new  
 
 
 def ln(inputs, epsilon = 1e-8, scope="ln"):
@@ -93,7 +86,7 @@ def scaled_dot_product_attention(Q, K, V,
         d_k = Q.get_shape().as_list()[-1]
 
         # dot product
-        outputs = tf.matmul(Q, tf.transpose(K, [0, 2, 1]))  # (N, T_q, T_k)
+        outputs = tf.matmul(Q, tf.transpose(K, [0, 2, 1]))  
 
         # scale
         outputs /= d_k ** 0.5
@@ -117,7 +110,7 @@ def scaled_dot_product_attention(Q, K, V,
         outputs = tf.layers.dropout(outputs, rate=dropout_rate, training=training)
 
         # weighted sum (context vectors)
-        outputs = tf.matmul(outputs, V)  # (N, T_q, d_v)
+        outputs = tf.matmul(outputs, V) 
 
     return outputs
 
@@ -129,9 +122,9 @@ def mask(inputs, queries=None, keys=None, type=None):
     e.g.,
     >> queries = tf.constant([[[1.],
                         [2.],
-                        [0.]]], tf.float32) # (1, 3, 1)
+                        [0.]]], tf.float32) 
     >> keys = tf.constant([[[4.],
-                     [0.]]], tf.float32)  # (1, 2, 1)
+                     [0.]]], tf.float32) 
     >> inputs = tf.constant([[[4., 0.],
                                [8., 0.],
                                [0., 0.]]], tf.float32)
@@ -150,25 +143,24 @@ def mask(inputs, queries=None, keys=None, type=None):
     padding_num = -2 ** 32 + 1
     if type in ("k", "key", "keys"):
         # Generate masks
-        masks = tf.sign(tf.reduce_sum(tf.abs(keys), axis=-1))  # (N, T_k)
-        masks = tf.expand_dims(masks, 1) # (N, 1, T_k)
-        masks = tf.tile(masks, [1, tf.shape(queries)[1], 1])  # (N, T_q, T_k)
+        masks = tf.sign(tf.reduce_sum(tf.abs(keys), axis=-1)) 
+        masks = tf.expand_dims(masks, 1) 
+        masks = tf.tile(masks, [1, tf.shape(queries)[1], 1]) 
 
         # Apply masks to inputs
         paddings = tf.ones_like(inputs) * padding_num
-        outputs = tf.where(tf.equal(masks, 0), paddings, inputs)  # (N, T_q, T_k)
+        outputs = tf.where(tf.equal(masks, 0), paddings, inputs)  
     elif type in ("q", "query", "queries"):
         # Generate masks
-        masks = tf.sign(tf.reduce_sum(tf.abs(queries), axis=-1))  # (N, T_q)
-        masks = tf.expand_dims(masks, -1)  # (N, T_q, 1)
-        masks = tf.tile(masks, [1, 1, tf.shape(keys)[1]])  # (N, T_q, T_k)
-
+        masks = tf.sign(tf.reduce_sum(tf.abs(queries), axis=-1)) 
+        masks = tf.expand_dims(masks, -1)  
+        masks = tf.tile(masks, [1, 1, tf.shape(keys)[1]])  
         # Apply masks to inputs
         outputs = inputs*masks
     elif type in ("f", "future", "right"):
-        diag_vals = tf.ones_like(inputs[0, :, :])  # (T_q, T_k)
-        tril = tf.linalg.LinearOperatorLowerTriangular(diag_vals).to_dense()  # (T_q, T_k)
-        masks = tf.tile(tf.expand_dims(tril, 0), [tf.shape(inputs)[0], 1, 1])  # (N, T_q, T_k)
+        diag_vals = tf.ones_like(inputs[0, :, :]) 
+        tril = tf.linalg.LinearOperatorLowerTriangular(diag_vals).to_dense()  
+        masks = tf.tile(tf.expand_dims(tril, 0), [tf.shape(inputs)[0], 1, 1])  
 
         paddings = tf.ones_like(masks) * padding_num
         outputs = tf.where(tf.equal(masks, 0), paddings, inputs)
@@ -200,20 +192,20 @@ def multihead_attention(queries, keys, values,
     d_model = queries.get_shape().as_list()[-1]
     with tf.variable_scope(scope):
         # Linear projections
-        Q = tf.layers.dense(queries, d_model, use_bias=False) # (N, T_q, batch-size) -> (N, T_q, d_model)
-        K = tf.layers.dense(keys, d_model, use_bias=False) # (N, T_k, d_model)
-        V = tf.layers.dense(values, d_model, use_bias=False) # (N, T_k, d_model)
+        Q = tf.layers.dense(queries, d_model, use_bias=False) 
+        K = tf.layers.dense(keys, d_model, use_bias=False) 
+        V = tf.layers.dense(values, d_model, use_bias=False)
         
         # Split and concat
-        Q_ = tf.concat(tf.split(Q, num_heads, axis=2), axis=0) # (h*N, T_q, d_model/h)
-        K_ = tf.concat(tf.split(K, num_heads, axis=2), axis=0) # (h*N, T_k, d_model/h)
-        V_ = tf.concat(tf.split(V, num_heads, axis=2), axis=0) # (h*N, T_k, d_model/h)
+        Q_ = tf.concat(tf.split(Q, num_heads, axis=2), axis=0) 
+        K_ = tf.concat(tf.split(K, num_heads, axis=2), axis=0) 
+        V_ = tf.concat(tf.split(V, num_heads, axis=2), axis=0) 
 
         # Attention
         outputs = scaled_dot_product_attention(Q_, K_, V_, causality, dropout_rate, training)
 
         # Restore shape
-        outputs = tf.concat(tf.split(outputs, num_heads, axis=0), axis=2 ) # (N, T_q, d_model)
+        outputs = tf.concat(tf.split(outputs, num_heads, axis=0), axis=2 )
               
         # Residual connection
         outputs += queries
@@ -223,7 +215,7 @@ def multihead_attention(queries, keys, values,
  
     return outputs
 
-def ff(inputs, num_units, scope="positionwise_feedforward"):        #全连接层*2 -> 残差链接（全连接结果加上一开始的输入） -> Normalize
+def ff(inputs, num_units, scope="positionwise_feedforward"):       
     '''position-wise feed forward net. See 3.3
     
     inputs: A 3d tensor with shape of [N, T, C].
@@ -277,7 +269,7 @@ def label_smoothing(inputs, epsilon=0.1):
         [ 0.03333334,  0.93333334,  0.03333334]]], dtype=float32)]   
     ```    
     '''
-    V = inputs.get_shape().as_list()[-1] # number of channels
+    V = inputs.get_shape().as_list()[-1] 
     return ((1-epsilon) * inputs) + (epsilon / V)
     
 def positional_encoding(inputs,
@@ -297,7 +289,7 @@ def positional_encoding(inputs,
     N, T = tf.shape(inputs)[0], tf.shape(inputs)[1] # dynamic
     with tf.variable_scope(scope):
         # position indices
-        position_ind = tf.tile(tf.expand_dims(tf.range(T), 0), [N, 1]) # (N, T)
+        position_ind = tf.tile(tf.expand_dims(tf.range(T), 0), [N, 1]) 
 
         # First part of the PE function: sin and cos argument
         position_enc = np.array([
@@ -305,10 +297,9 @@ def positional_encoding(inputs,
             for pos in range(maxlen)])
 
         # Second part, apply the cosine to even columns and sin to odds.
-        position_enc[:, 0::2] = np.sin(position_enc[:, 0::2])  # dim 2i
-        position_enc[:, 1::2] = np.cos(position_enc[:, 1::2])  # dim 2i+1
-        position_enc = tf.convert_to_tensor(position_enc, tf.float32) # (maxlen, E)
-
+        position_enc[:, 0::2] = np.sin(position_enc[:, 0::2])  
+        position_enc[:, 1::2] = np.cos(position_enc[:, 1::2]) 
+        position_enc = tf.convert_to_tensor(position_enc, tf.float32)
         # lookup
         outputs = tf.nn.embedding_lookup(position_enc, position_ind)
 
