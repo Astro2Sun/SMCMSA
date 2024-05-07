@@ -1,3 +1,7 @@
+## SMCMSA
+
+- `tensorflow implementation for SMCMSA`
+
 ## Requirements
 
 - `tensorflow-gpu==1.14.0`
