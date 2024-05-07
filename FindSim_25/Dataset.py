@@ -135,25 +135,21 @@ class Dataset:
             alltraindata = {'ID': [], 'V': [], 'A': [], 'T': [], 'L': [], 'F': []}
             alltestdata = {'ID': [], 'V': [], 'A': [], 'T': [], 'L': [], 'F': []}
             for i in range(len(traindata_target['ID'])):
-                # 有V模态
                 if traindata_target['F'][i] in [-1, 1, 2, 3]:
                     vtraindata['ID'].append(traindata_target['ID'][i])
                     vtraindata['V'].append(traindata_target['V'][i])
                     vtraindata['L'].append(traindata_target['L'][i])
                     vtraindata['F'].append(traindata_target['F'][i])
-                # 有A模态
                 if traindata_target['F'][i] in [-1, 0, 2, 4]:
                     atraindata['ID'].append(traindata_target['ID'][i])
                     atraindata['A'].append(traindata_target['A'][i])
                     atraindata['L'].append(traindata_target['L'][i])
                     atraindata['F'].append(traindata_target['F'][i])
-                # 有T模态
                 if traindata_target['F'][i] in [-1, 0, 1, 5]:
                     ttraindata['ID'].append(traindata_target['ID'][i])
                     ttraindata['T'].append(traindata_target['T'][i])
                     ttraindata['L'].append(traindata_target['L'][i])
                     ttraindata['F'].append(traindata_target['F'][i])
-                # 有V，A，T模态
                 if traindata_target['F'][i] == -1:
                     alltraindata['ID'].append(traindata_target['ID'][i])
                     alltraindata['V'].append(traindata_target['V'][i])
@@ -164,25 +160,21 @@ class Dataset:
 
 
             for i in range(len(testdata_target['ID'])):
-                # 有V模态
                 if testdata_target['F'][i] in [-1, 1, 2, 3]:
                     vtestdata['ID'].append(testdata_target['ID'][i])
                     vtestdata['V'].append(testdata_target['V'][i])
                     vtestdata['L'].append(testdata_target['L'][i])
                     vtestdata['F'].append(testdata_target['F'][i])
-                # 有A模态
                 if testdata_target['F'][i] in [-1, 0, 2, 4]:
                     atestdata['ID'].append(testdata_target['ID'][i])
                     atestdata['A'].append(testdata_target['A'][i])
                     atestdata['L'].append(testdata_target['L'][i])
                     atestdata['F'].append(testdata_target['F'][i])
-                # 有T模态
                 if testdata_target['F'][i] in [-1, 0, 1, 5]:
                     ttestdata['ID'].append(testdata_target['ID'][i])
                     ttestdata['T'].append(testdata_target['T'][i])
                     ttestdata['L'].append(testdata_target['L'][i])
                     ttestdata['F'].append(testdata_target['F'][i])
-                # 有V，A，T模态
                 if testdata_target['F'][i] == -1 :
                     alltestdata['ID'].append(testdata_target['ID'][i])
                     alltestdata['V'].append(testdata_target['V'][i])
@@ -401,23 +393,6 @@ class Dataset:
         return cur_batch
 
 if __name__ == '__main__':
-#     data = Dataset()
-#     data.miss_modality(data.config.miss_rate)
-#     print (data.config.miss_rate)
-#     traindata, testdata = data.setdata(2000)
-#
-# #    print (traindata['A'][:2])
-#
-#     pickle.dump(traindata, open('./train.pkl', 'wb'))
-#     pickle.dump(testdata, open('./test.pkl', 'wb'))
-#
-#
-# #    print (traindata['L'][:10])
-#     cur_batch = data.nextBatch(traindata, testdata, True)
-# #    print (cur_batch['L'])
-#     print (cur_batch['ID'])
-
-    # 找出所有有V，A，T单独的
     data = Dataset()
     traindata = pickle.load(open('./m25train.pkl', 'rb'))
     testdata  = pickle.load(open('./m25test.pkl', 'rb'))
@@ -433,7 +408,3 @@ if __name__ == '__main__':
     pickle.dump(testdata_Tcomplete, open('./m25Tcomplete_test.pkl', 'wb'))
     pickle.dump(traindata_VATcomplete, open('./m25VATcomplete_train.pkl', 'wb'))
     pickle.dump(testdata_VATcomplete, open('./m25VATcomplete_test.pkl', 'wb'))
-    # #    print (traindata['L'][:10])
-    # cur_batch = data.nextBatch(traindata, testdata, True)
-    # #    print (cur_batch['L'])
-    # print(cur_batch['ID'])
