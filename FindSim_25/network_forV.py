@@ -11,8 +11,7 @@ class MM:
         self.temp = 'null'
         self.config = Config()
         self.att_dim = self.config.att_dim
-        self.visual = tf.placeholder(dtype=tf.float32, shape=[self.config.batch_size, self.config.max_visual_len, 709],
-                                     name='visual')
+        self.visual = tf.placeholder(dtype=tf.float32, shape=[self.config.batch_size, self.config.max_visual_len, 709], name='visual')
 
         self.label = tf.placeholder(dtype=tf.int32, shape=[self.config.batch_size], name='label')
         visual = tf.layers.dense(self.visual, self.config.att_dim, use_bias=False)
@@ -67,7 +66,6 @@ class MM:
         with tf.name_scope('loss'):
             loss = tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits(logits=output_res, labels=ouput_label))
             self.loss = loss
-            self.l2_loss = tf.contrib.layers.apply_regularization(regularizer=tf.contrib.layers.l2_regularizer(0.0001),
-                                                                  weights_list=[W_l, b_l])
+            self.l2_loss = tf.contrib.layers.apply_regularization(regularizer=tf.contrib.layers.l2_regularizer(0.0001),weights_list=[W_l, b_l])
             self.total_loss = self.loss + self.l2_loss + 0.1 * self.de_loss
 
