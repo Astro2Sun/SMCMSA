@@ -5,7 +5,7 @@ import datetime
 import numpy as np
 from Settings import Config
 from Dataset import Dataset
-from network4_fast_pretrain_full_modality_improved import MM
+from network import MM
 # from network_add_wei import MM
 import pickle
 from sklearn.metrics import f1_score
