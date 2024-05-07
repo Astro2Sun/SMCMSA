@@ -15,19 +15,12 @@ bestamodel = './saved-modelA/MT_ATT_model-860'
 besttmodel = './saved-modelT/MT_ATT_model-220'
 
 mtraindata_fortrain = pickle.load(open('F:\data\mosi\m25train.pkl', 'rb'))
-# mtestdata = pickle.load(open('D:/daima/TATE/TATE-master/data/mosi/m25test.pkl', 'rb'))
 mtestdata = pickle.load(open('F:\data\mosi\m25test.pkl', 'rb'))
 
-
-
-# mtraindata_fortrain = pickle.load(open('../../data/m21train.pkl', 'rb'))
-# mtestdata = pickle.load(open('../../data/m21test.pkl', 'rb'))
 miss_type = 'm25'
-
 
 traindata_name = './' + miss_type + 'VATcomplete_train.pkl'
 testdata_name = './' + miss_type + 'VATcomplete_test.pkl'
-
 
 def seperate_data():
     data = Dataset()
@@ -52,9 +45,7 @@ def seperate_data():
     pickle.dump(traindata_VATcomplete, open(VATtrain_file, 'wb'))
     pickle.dump(testdata_VATcomplete, open(VATtest_file, 'wb'))
 
-
 def downdim_forAtrain_fromVAT(sess,setting, modelname = './saved-modelA/MT_ATT_model-590'):
-
     traindata = pickle.load(open(traindata_name, 'rb'))
     testdata  = pickle.load(open(testdata_name, 'rb'))
     from network_forA import MM
@@ -90,11 +81,8 @@ def downdim_forAtest_fromVAT(sess, setting, modelname = './saved-modelA/MT_ATT_m
     testdata = pickle.load(open(testdata_name, 'rb'))
     from network_forA import MM
     dataset = Dataset()
-
     with sess.as_default():
         with tf.variable_scope('model'):
-
-
             mtest = MM(is_training=False)
         saver = tf.train.Saver()
         try:
@@ -235,18 +223,13 @@ def downdim_forTtest_fromVAT(sess, setting, modelname='./saved-modelT/MT_ATT_mod
             temp_new = sess.run([mtest.temp_new_todowndim], feed_dict)
             prob = sess.run([mtest.prob], feed_dict)
             result = np.append(result, temp_new[0], axis=0)
-
             for j in range(len(prob[0])): 
                 total_pred.append(np.argmax(prob[0][j], -1))
-
         result = result[1:, :]
         print(len(result))
         lowdim_topkltest = dataset.setdata_for_Tdowndim(result, testdata,total_pred)
         TtestFilename = './' + miss_type + 'TComplete_lowdim_test.pkl'
         pickle.dump(lowdim_topkltest, open(TtestFilename, 'wb'))
-
-
-
 
 uncom_traindata_namea = './' + miss_type + 'Acomplete_train.pkl'
 uncom_testdata_namea = './' + miss_type + 'Acomplete_test.pkl'
@@ -256,7 +239,6 @@ uncom_traindata_namet = './' + miss_type + 'Tcomplete_train.pkl'
 uncom_testdata_namet = './' + miss_type + 'Tcomplete_test.pkl'
 
 def downdim_forAtrain_fromuncomplete(sess,setting, modelname = './saved-modelA/MT_ATT_model-590'):
-
     traindata = pickle.load(open(uncom_traindata_namea, 'rb'))
     testdata  = pickle.load(open(uncom_testdata_namea, 'rb'))
     from network_forA import MM
@@ -475,7 +457,6 @@ def downdim_fortestDataset(sess, setting, modelname='./saved-modelT/MT_ATT_model
         TtestFilename = './' + miss_type + 'Tlowdim_test.pkl'
         pickle.dump(lowdim_topkltest, open(TtestFilename, 'wb'))
 
-
 def fill_m2():
     traindata = {'ID': [], 'V': [], 'A': [], 'T': [], 'L': [], 'F': [], 'PreL': []}
     testdata = {'ID': [], 'V': [], 'A': [], 'T': [], 'L': [], 'F': [], 'PreL': []}
@@ -615,8 +596,6 @@ def fill_m2():
                 traindata['T'].append(uncomplete_data['T'][i])
                 traindata['L'].append(uncomplete_data['L'][i])
                 traindata['F'].append(uncomplete_data['F'][i])
-
-
         else:
             traindata['ID'].append(uncomplete_data['ID'][i])
             traindata['V'].append(uncomplete_data['V'][i])
@@ -625,15 +604,13 @@ def fill_m2():
             traindata['L'].append(uncomplete_data['L'][i])
             traindata['F'].append(uncomplete_data['F'][i])
 
-    # pickle.dump(traindata, open('./'+ miss_type + 'train_complete.pkl', 'wb'))
+    pickle.dump(traindata, open('./'+ miss_type + 'train_complete.pkl', 'wb'))
 
     # testdata complete
     uncomplete_data_test = mtestdata
     # complete_data_train = mtraindata
     mtraindata = pickle.load(open('./'+ miss_type + 'VATcomplete_train.pkl', 'rb'))
     complete_data_train = mtraindata
-
-
 
     # Vlowdim_train = pickle.load(open(miss_type + 'Vlowdim_train.pkl', 'rb'))
     # Alowdim_train = pickle.load(open(miss_type + 'Alowdim_train.pkl', 'rb'))
@@ -653,7 +630,6 @@ def fill_m2():
     tdata_train = np.array(ttraindata['T'])
     tlabels_train = np.array(ttraindata['L'])
     tids_train = np.array(ttraindata['ID'])
-
 
     Vlowdim = pickle.load(open(miss_type + 'Vlowdim_test.pkl', 'rb'))
     Alowdim = pickle.load(open(miss_type + 'Alowdim_test.pkl', 'rb'))
@@ -756,7 +732,6 @@ def fill_m2():
             if tlowdmi_index in Tlowdim['ID']:
                 tlowdmi_index = Tlowdim['ID'].index(tlowdmi_index)
                 input_data = np.array(Tlowdim['T'][tlowdmi_index]).reshape(1, 300)
-
                 similarity = np.dot(tdata_train, input_data.T) / (np.linalg.norm(tdata_train, axis=1) * np.linalg.norm(input_data))
                 num_top_similar_points = 3
                 top_similar_points_indices = np.argsort(similarity[:, 0])[::-1][:num_top_similar_points]
@@ -786,7 +761,6 @@ def fill_m2():
                 testdata['T'].append(uncomplete_data_test['T'][i])
                 testdata['L'].append(uncomplete_data_test['L'][i])
                 testdata['F'].append(uncomplete_data_test['F'][i])
-
         else:
             testdata['ID'].append(uncomplete_data_test['ID'][i])
             testdata['V'].append(uncomplete_data_test['V'][i])
