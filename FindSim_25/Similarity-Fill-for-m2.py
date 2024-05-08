@@ -4,8 +4,6 @@ import numpy as np
 from Settings import Config
 from Dataset import Dataset
 import random
-# from network_forT import MM
-# from network_forV import MM
 
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
@@ -560,7 +558,6 @@ def fill_m2():
                 traindata['L'].append(uncomplete_data['L'][i])
                 traindata['F'].append(uncomplete_data['F'][i])
 
-
         elif uncomplete_data['F'][i] == 5:  
             tlowdmi_index = uncomplete_data['ID'][i]
             if tlowdmi_index in Tlowdim['ID']:
@@ -608,13 +605,8 @@ def fill_m2():
 
     # testdata complete
     uncomplete_data_test = mtestdata
-    # complete_data_train = mtraindata
     mtraindata = pickle.load(open('./'+ miss_type + 'VATcomplete_train.pkl', 'rb'))
     complete_data_train = mtraindata
-
-    # Vlowdim_train = pickle.load(open(miss_type + 'Vlowdim_train.pkl', 'rb'))
-    # Alowdim_train = pickle.load(open(miss_type + 'Alowdim_train.pkl', 'rb'))
-    # Tlowdim_train = pickle.load(open(miss_type + 'Tlowdim_train.pkl', 'rb'))
 
     vtraindata = pickle.load(open(miss_type + 'VComplete_lowdim_train.pkl', 'rb'))
     vdata_train = np.array(vtraindata['V'])
@@ -634,21 +626,6 @@ def fill_m2():
     Vlowdim = pickle.load(open(miss_type + 'Vlowdim_test.pkl', 'rb'))
     Alowdim = pickle.load(open(miss_type + 'Alowdim_test.pkl', 'rb'))
     Tlowdim = pickle.load(open(miss_type + 'Tlowdim_test.pkl', 'rb'))
-    #
-    # vtraindata = pickle.load(open(miss_type + 'VComplete_lowdim_test.pkl', 'rb'))
-    # vdata = np.array(vtraindata['V'])
-    # vlabels = np.array(vtraindata['L'])
-    # vids = np.array(vtraindata['ID'])
-    #
-    # atraindata = pickle.load(open(miss_type + 'AComplete_lowdim_test.pkl', 'rb'))
-    # adata = np.array(atraindata['A'])
-    # alabels = np.array(atraindata['L'])
-    # aids = np.array(atraindata['ID'])
-    #
-    # ttraindata = pickle.load(open(miss_type + 'TComplete_lowdim_test.pkl', 'rb'))
-    # tdata = np.array(ttraindata['T'])
-    # tlabels = np.array(ttraindata['L'])
-    # tids = np.array(ttraindata['ID'])
 
     for i in range(len(uncomplete_data_test['ID'])):
         if uncomplete_data_test['F'][i] == 3:  
@@ -656,7 +633,6 @@ def fill_m2():
             if vlowdmi_index in Vlowdim['ID']:
                 vlowdmi_index = Vlowdim['ID'].index(vlowdmi_index)
                 input_data = np.array(Vlowdim['V'][vlowdmi_index]).reshape(1, 300)
-
                 similarity = np.dot(vdata_train, input_data.T) / (np.linalg.norm(vdata_train, axis=1) * np.linalg.norm(input_data))
                 num_top_similar_points = 3
                 top_similar_points_indices = np.argsort(similarity[:, 0])[::-1][:num_top_similar_points]
@@ -694,7 +670,6 @@ def fill_m2():
             if alowdmi_index in Alowdim['ID']:
                 alowdmi_index = Alowdim['ID'].index(alowdmi_index)
                 input_data = np.array(Alowdim['A'][alowdmi_index]).reshape(1, 300)
-
                 similarity = np.dot(adata_train, input_data.T) / (np.linalg.norm(adata_train, axis=1) * np.linalg.norm(input_data))
                 num_top_similar_points = 3
                 top_similar_points_indices = np.argsort(similarity[:, 0])[::-1][:num_top_similar_points]
@@ -772,14 +747,6 @@ def fill_m2():
     pickle.dump(testdata, open('./' + miss_type + 'test_complete.pkl', 'wb'))
 
 
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     miss = 1
     # seperate_data()     
@@ -789,7 +756,6 @@ if __name__ == '__main__':
         #     config = tf.ConfigProto(allow_soft_placement=True)
         #     config.gpu_options.allow_growth = True
         #     sess = tf.Session(config=config)
-        #
         #     downdim_forAtrain_fromVAT(sess, setting, bestamodel)
         #
         # with tf.Graph().as_default():
