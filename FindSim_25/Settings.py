@@ -9,7 +9,5 @@ class Config(object):
         self.att_dim = 300
         self.class_num = 3
         self.dropout = 0.7
-        # self.dropout = 0.5
         self.learning_rate = 0.001
-        # self.learning_rate = 0.005
         self.miss_rate = 0.2
