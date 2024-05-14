@@ -157,8 +157,7 @@ class Dataset:
                     alltraindata['T'].append(traindata_target['T'][i])
                     alltraindata['L'].append(traindata_target['L'][i])
                     alltraindata['F'].append(traindata_target['F'][i])
-
-
+                    
             for i in range(len(testdata_target['ID'])):
                 if testdata_target['F'][i] in [-1, 1, 2, 3]:
                     vtestdata['ID'].append(testdata_target['ID'][i])
@@ -182,10 +181,7 @@ class Dataset:
                     alltestdata['T'].append(testdata_target['T'][i])
                     alltestdata['L'].append(testdata_target['L'][i])
                     alltestdata['F'].append(testdata_target['F'][i])
-
-
             return vtraindata,vtestdata,atraindata,atestdata,ttraindata,ttestdata,alltraindata,alltestdata
-
 
     def setdata_for_Tdowndim(self, result,testdata_target,traindata_target=0):
             ttestdata = {'ID': [], 'T': [], 'L': [], 'F': []}
@@ -391,7 +387,6 @@ class Dataset:
                      'Sentiment':nextSentimentBatch, 'Emotion':nextEmotionBatch}
         return cur_batch
 
-
     def nextBatch_forT(self, traindata, testdata, is_training = True):
         if is_training:
             if (self.iter_num+1)*self.config.batch_size > len(traindata['ID']):
@@ -432,6 +427,7 @@ class Dataset:
 
         cur_batch = {'ID':nextIDBatch, 'T':nextTextBatch, 'L':nextLableBatch, 'F':nextFlagBatch}
         return cur_batch
+        
     def nextBatch_forV(self, traindata, testdata, is_training = True):
         if is_training:
             if (self.iter_num+1)*self.config.batch_size > len(traindata['ID']):
@@ -472,6 +468,7 @@ class Dataset:
 
         cur_batch = {'ID':nextIDBatch, 'V':nextVisualBatch, 'L':nextLableBatch, 'F':nextFlagBatch}
         return cur_batch
+        
     def nextBatch_forA(self, traindata, testdata, is_training = True):
         if is_training:
             if (self.iter_num+1)*self.config.batch_size > len(traindata['ID']):
