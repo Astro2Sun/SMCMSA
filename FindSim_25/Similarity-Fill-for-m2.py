@@ -58,7 +58,7 @@ def downdim_forAtrain_fromVAT(sess,setting, modelname = './saved-modelA/MT_ATT_m
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(traindata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(traindata['L']) / setting.batch_size)): 
             cur_batch = dataset.nextBatch_forA(traindata, testdata, is_training = True)
             feed_dict = {}
             feed_dict[mtest.audio] = cur_batch['A']
@@ -89,7 +89,7 @@ def downdim_forAtest_fromVAT(sess, setting, modelname = './saved-modelA/MT_ATT_m
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(testdata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(testdata['L']) / setting.batch_size)): 
             cur_batch = dataset.nextBatch_forA(traindata, testdata, is_training= False)
             feed_dict = {}
             feed_dict[mtest.audio] = cur_batch['A']
@@ -120,7 +120,7 @@ def downdim_forVtrain_fromVAT(sess,setting, modelname = './saved-modelV/MT_ATT_m
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(traindata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(traindata['L']) / setting.batch_size)):  
             cur_batch = dataset.nextBatch_forV(traindata, testdata,is_training = True)
             feed_dict = {}
             feed_dict[mtest.visual] = cur_batch['V']
@@ -151,7 +151,7 @@ def downdim_forVtest_fromVAT(sess, setting, modelname = './saved-modelV/MT_ATT_m
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(testdata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(testdata['L']) / setting.batch_size)): 
             cur_batch = dataset.nextBatch_forV(traindata, testdata, is_training= False)
             feed_dict = {}
             feed_dict[mtest.visual] = cur_batch['V']
@@ -182,7 +182,7 @@ def downdim_forTtrain_fromVAT(sess,setting, modelname = './saved-modelT/MT_ATT_m
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(traindata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(traindata['L']) / setting.batch_size)): 
             cur_batch = dataset.nextBatch_forT(traindata, testdata, is_training = True)
             feed_dict = {}
             feed_dict[mtest.text] = cur_batch['T']
@@ -213,7 +213,7 @@ def downdim_forTtest_fromVAT(sess, setting, modelname='./saved-modelT/MT_ATT_mod
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(testdata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(testdata['L']) / setting.batch_size)):  
             cur_batch = dataset.nextBatch_forT(traindata, testdata, is_training= False)
             feed_dict = {}
             feed_dict[mtest.text] = cur_batch['T']
@@ -251,7 +251,7 @@ def downdim_forAtrain_fromuncomplete(sess,setting, modelname = './saved-modelA/M
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(traindata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(traindata['L']) / setting.batch_size)):  
             cur_batch = dataset.nextBatch_forA(traindata, testdata, is_training = True)
             feed_dict = {}
             feed_dict[mtest.audio] = cur_batch['A']
@@ -282,7 +282,7 @@ def downdim_forAtest_fromuncomplete(sess, setting, modelname = './saved-modelA/M
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(testdata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(testdata['L']) / setting.batch_size)): 
             cur_batch = dataset.nextBatch_forA(traindata, testdata, is_training= False)
             feed_dict = {}
             feed_dict[mtest.audio] = cur_batch['A']
@@ -313,7 +313,7 @@ def downdim_forVtrain_fromuncomplete(sess,setting, modelname = './saved-modelV/M
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(traindata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(traindata['L']) / setting.batch_size)): 
             cur_batch = dataset.nextBatch_forV(traindata, testdata,is_training = True)
             feed_dict = {}
             feed_dict[mtest.visual] = cur_batch['V']
@@ -344,7 +344,7 @@ def downdim_forVtest_fromuncomplete(sess, setting, modelname = './saved-modelV/M
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(testdata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(testdata['L']) / setting.batch_size)):  
             cur_batch = dataset.nextBatch_forV(traindata, testdata, is_training= False)
             feed_dict = {}
             feed_dict[mtest.visual] = cur_batch['V']
@@ -375,7 +375,7 @@ def downdim_forTtrain_fromuncomplete(sess,setting, modelname = './saved-modelT/M
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(traindata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(traindata['L']) / setting.batch_size)): 
             cur_batch = dataset.nextBatch_forT(traindata, testdata, is_training = True)
             feed_dict = {}
             feed_dict[mtest.text] = cur_batch['T']
@@ -406,7 +406,7 @@ def downdim_forTtest_fromuncomplete(sess, setting, modelname='./saved-modelT/MT_
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(testdata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(testdata['L']) / setting.batch_size)): 
             cur_batch = dataset.nextBatch_forT(traindata, testdata, is_training= False)
             feed_dict = {}
             feed_dict[mtest.text] = cur_batch['T']
@@ -439,7 +439,7 @@ def downdim_fortestDataset(sess, setting, modelname='./saved-modelT/MT_ATT_model
             print('Error')
         result = np.zeros((1, 300))
         total_pred = []
-        for i in range(int(len(testdata['L']) / setting.batch_size)):  # IndexError: index 128 is out of bounds for axis 0 with size 128
+        for i in range(int(len(testdata['L']) / setting.batch_size)):  
             cur_batch = dataset.nextBatch_forT(traindata, testdata, is_training= False)
             feed_dict = {}
             feed_dict[mtest.text] = cur_batch['T']
@@ -495,7 +495,6 @@ def fill_m2():
                     id = vids[j]
                     index = uncomplete_data['ID'].index(id)
                     preL_index = vtraindata['ID'].index(id)
-                    # if uncomplete_data['L'][i] == uncomplete_data['L'][index]:
                     if Vlowdim['PreL'][vlowdmi_index] == vtraindata['PreL'][preL_index]:
                         print('ID: {}, Label: {}'.format(vids[j], vlabels[j]))
                         traindata['ID'].append(uncomplete_data['ID'][i])
@@ -533,7 +532,6 @@ def fill_m2():
                     id = aids[j]
                     index = uncomplete_data['ID'].index(id)
                     preL_index = atraindata['ID'].index(id)
-                    # if uncomplete_data['L'][i] == uncomplete_data['L'][index]:
                     if Alowdim['PreL'][alowdmi_index] == atraindata['PreL'][preL_index]:
                         print('ID: {}, Label: {}'.format(aids[j], alabels[j]))
                         traindata['ID'].append(uncomplete_data['ID'][i])
@@ -569,7 +567,6 @@ def fill_m2():
                 for j in top_similar_points_indices:
                     id = tids[j]
                     index = uncomplete_data['ID'].index(id)
-                    # if uncomplete_data['L'][i] == uncomplete_data['L'][index]:
                     if Tlowdim['PreL'][tlowdmi_index] == uncomplete_data['L'][index]:
                         print('ID: {}, Label: {}'.format(tids[j], tlabels[j]))
                         traindata['ID'].append(uncomplete_data['ID'][i])
@@ -640,7 +637,6 @@ def fill_m2():
                     id = vids_train[j]
                     index = complete_data_train['ID'].index(id)
                     preL_index = vtraindata['ID'].index(id)
-                    # if Vlowdim['PreL'][vlowdmi_index] == complete_data_train['L'][index]:
                     if Vlowdim['PreL'][vlowdmi_index] == vtraindata['PreL'][preL_index]:
                         print('ID: {}, Label: {}'.format(vids_train[j], vlabels_train[j]))
                         testdata['ID'].append(uncomplete_data_test['ID'][i])
@@ -677,7 +673,6 @@ def fill_m2():
                     id = aids_train[j]
                     index = complete_data_train['ID'].index(id)
                     preL_index = atraindata['ID'].index(id)
-                    # if Alowdim['PreL'][alowdmi_index] == complete_data_train['L'][index]:
                     if Alowdim['PreL'][alowdmi_index] == atraindata['PreL'][preL_index]:
                         print('ID: {}, Label: {}'.format(aids_train[j], alabels_train[j]))
                         testdata['ID'].append(uncomplete_data_test['ID'][i])
