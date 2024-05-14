@@ -23,8 +23,8 @@ FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_boolean('train',False, 'set True to train')
 
 
-traindata = pickle.load(open('F:\complete_data_noTrainInTest\mosi\\m11train_complete.pkl', 'rb'))
-testdata = pickle.load(open('F:\complete_data_noTrainInTest\mosi\m11fill\\m23test_complete.pkl', 'rb'))
+traindata = pickle.load(open('..\mosi\\m11train_complete.pkl', 'rb'))
+testdata = pickle.load(open('..\mosi\\m11test_complete.pkl', 'rb'))
 
 
 
@@ -62,8 +62,8 @@ def train(sess, setting):
         sess.run(tf.initialize_all_variables())
         saver = tf.train.Saver(max_to_keep=None)
 
-        new_saver = tf.train.import_meta_graph('./m00fast_full_model_train/MT_ATT_model-390.meta')
-        new_saver.restore(sess, './m00fast_full_model_train/MT_ATT_model-390')
+        new_saver = tf.train.import_meta_graph('./saved-model/MT_ATT_model-390.meta')
+        new_saver.restore(sess, './saved-model/MT_ATT_model-390')
         graph = tf.get_default_graph()
 
         visual = sess.graph.get_tensor_by_name("model/visual:0")
