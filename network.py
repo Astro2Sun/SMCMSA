@@ -145,7 +145,7 @@ class MM:
         tempt = tf.squeeze(tempt,1)
 
         with tf.variable_scope('enc_TinfuluenceV', reuse=tf.AUTO_REUSE):
-            enc_TinfuluenceV = multihead_attention(queries=tempv,  # 32 * 300 * 300
+            enc_TinfuluenceV = multihead_attention(queries=tempv,
                                                        keys=tempt,
                                                        values=tempt,
                                                        num_heads=4,
